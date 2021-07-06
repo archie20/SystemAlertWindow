@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -268,7 +269,11 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
         //Log.i(TAG, "codeCallBackHandle " + codeCallBackHandle);
         if (codeCallBackHandle == -1) {
             Log.e(TAG, "invokeCallBack failed, as codeCallBackHandle is null");
-            openApplication(context);
+            try {
+                openApplication(context);
+            } catch (PendingIntent.CanceledException e) {
+                Log.e(TAG, "Opening Application failed " + e.toString());
+            }
         } else {
             argumentsList.clear();
             argumentsList.add(codeCallBackHandle);
@@ -378,9 +383,12 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
         notificationHelper.showNotification(icon, title, body, params);
     }
 
-    private static void openApplication(Context context){
+    private static void openApplication(Context context) throws PendingIntent.CanceledException {
         PackageManager pm = context.getApplicationContext().getPackageManager();
-        Intent notificationIntent  =
+        Intent intent  =
                 pm.getLaunchIntentForPackage(context.getApplicationContext().getPackageName());
+        PendingIntent pendingIntent =  PendingIntent.getActivity(context, 0, intent, 0);
+        pendingIntent.send();
+
     }
 }
