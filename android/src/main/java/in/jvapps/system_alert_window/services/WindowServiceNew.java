@@ -48,7 +48,7 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
 
     private static final String TAG = WindowServiceNew.class.getSimpleName();
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
-    private static int NOTIFICATION_ID = 1;
+    private static int NOTIFICATION_ID = 167866;
     public static final String INTENT_EXTRA_IS_UPDATE_WINDOW = "IsUpdateWindow";
     public static final String INTENT_EXTRA_IS_CLOSE_WINDOW = "IsCloseWindow";
 
@@ -80,7 +80,7 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Overlay window service is running")
-                .setSmallIcon(R.drawable.ic_desktop_windows_black_24dp)
+                .setSmallIcon(R.drawable.ic_logo)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(NOTIFICATION_ID, notification);
@@ -174,7 +174,7 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
             windowView = new LinearLayout(mContext);
         }
         windowView.setOrientation(LinearLayout.VERTICAL);
-        windowView.setBackgroundColor(Color.WHITE);
+       // windowView.setBackgroundColor(Color.WHITE);
         windowView.setLayoutParams(params);
         windowView.removeAllViews();
         windowView.addView(headerView);
