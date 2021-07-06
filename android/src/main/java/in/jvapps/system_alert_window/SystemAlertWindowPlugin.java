@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
@@ -267,6 +268,7 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
         //Log.i(TAG, "codeCallBackHandle " + codeCallBackHandle);
         if (codeCallBackHandle == -1) {
             Log.e(TAG, "invokeCallBack failed, as codeCallBackHandle is null");
+            openApplication(context);
         } else {
             argumentsList.clear();
             argumentsList.add(codeCallBackHandle);
@@ -374,5 +376,11 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
         Icon icon = Icon.createWithResource(mContext, R.drawable.ic_logo);
         NotificationHelper notificationHelper = NotificationHelper.getInstance(mContext);
         notificationHelper.showNotification(icon, title, body, params);
+    }
+
+    private static void openApplication(Context context){
+        PackageManager pm = context.getApplicationContext().getPackageManager();
+        Intent notificationIntent  =
+                pm.getLaunchIntentForPackage(context.getApplicationContext().getPackageName());
     }
 }
