@@ -378,7 +378,7 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void showBubble(String title, String body, HashMap<String, Object> params) {
-        Icon icon = Icon.createWithResource(mContext, R.drawable.ic_logo);
+        Icon icon = Icon.createWithResource(mContext, R.drawable.ic_small_car);
         NotificationHelper notificationHelper = NotificationHelper.getInstance(mContext);
         notificationHelper.showNotification(icon, title, body, params);
     }
