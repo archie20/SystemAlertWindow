@@ -126,6 +126,8 @@ class _MyAppState extends State<MyApp> {
           gravity: SystemWindowGravity.TOP,
           notificationTitle: "Incoming Call",
           notificationBody: "+1 646 980 4741",
+          iconResource: 'ic_desktop_windows_black_24dp',
+          defType: 'drawable',
           prefMode: SystemWindowPrefMode.OVERLAY
       );
       setState(() {

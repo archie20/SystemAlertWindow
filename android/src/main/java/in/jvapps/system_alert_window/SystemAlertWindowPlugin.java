@@ -18,6 +18,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
@@ -61,6 +62,8 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
     public static int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 1237;
     private static NotificationManager notificationManager;
     private static String TAG = "SystemAlertWindowPlugin";
+    public static String iconName = "";
+    public static String iconDefType = "";
 
     @SuppressWarnings("unused")
     public static void registerWith(Registrar registrar) {
@@ -104,6 +107,11 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
                     String body = (String) arguments.get(1);
                     HashMap<String, Object> params = (HashMap<String, Object>) arguments.get(2);
                     String prefMode = (String) arguments.get(3);
+                    iconName = (String) arguments.get(4);
+                    iconDefType = (String) arguments.get(5);
+
+
+
                     if(prefMode == null){
                         prefMode = "default";
                     }
@@ -137,6 +145,9 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
                     String updateBody = (String) updateArguments.get(1);
                     HashMap<String, Object> updateParams = (HashMap<String, Object>) updateArguments.get(2);
                     String prefMode = (String) updateArguments.get(3);
+                    iconName = (String) updateArguments.get(4);
+                    iconDefType = (String) updateArguments.get(5);
+
                     if(prefMode == null){
                         prefMode = "default";
                     }
@@ -378,7 +389,9 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void showBubble(String title, String body, HashMap<String, Object> params) {
-        Icon icon = Icon.createWithResource(mContext, R.drawable.ic_small_car);
+        int iconId = mContext.getApplicationContext().getResources().getIdentifier(SystemAlertWindowPlugin.iconName,
+                SystemAlertWindowPlugin.iconDefType,getPackageName());
+        Icon icon = Icon.createWithResource(mContext, iconId);
         NotificationHelper notificationHelper = NotificationHelper.getInstance(mContext);
         notificationHelper.showNotification(icon, title, body, params);
     }

@@ -79,6 +79,8 @@ class SystemAlertWindow {
       int? height,
       String notificationTitle = "Title",
       String notificationBody = "Body",
+      String iconResource = 'ic_launcher',
+      String defType = 'mipmap',
       SystemWindowPrefMode prefMode = SystemWindowPrefMode.DEFAULT}) async {
     assert(header != null);
     final Map<String, dynamic> params = <String, dynamic>{
@@ -88,9 +90,9 @@ class SystemAlertWindow {
       'margin': margin?.getMap(),
       'gravity': Commons.getWindowGravity(gravity),
       'width': width ?? Constants.MATCH_PARENT,
-      'height': height ?? Constants.WRAP_CONTENT
+      'height': height ?? Constants.WRAP_CONTENT,
     };
-    return await _channel.invokeMethod('showSystemWindow', [notificationTitle, notificationBody, params, Commons.getSystemWindowPrefMode(prefMode)]);
+    return await _channel.invokeMethod('showSystemWindow', [notificationTitle, notificationBody, params, Commons.getSystemWindowPrefMode(prefMode), iconResource, defType]);
   }
 
   static Future<bool?> updateSystemWindow(

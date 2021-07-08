@@ -74,21 +74,23 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
 
     @Override
     public void onCreate() {
+        int iconId = getResources().getIdentifier(SystemAlertWindowPlugin.iconName,
+                SystemAlertWindowPlugin.iconDefType,getPackageName());
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, SystemAlertWindowPlugin.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Overlay window service is running")
-                .setSmallIcon(R.drawable.ic_small_car)
+                .setSmallIcon(iconId)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(NOTIFICATION_ID, notification);
+        super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
         if (null != intent && intent.getExtras() != null) {
             @SuppressWarnings("unchecked")
             HashMap<String, Object> paramsMap = (HashMap<String, Object>) intent.getSerializableExtra(INTENT_EXTRA_PARAMS_MAP);
@@ -218,7 +220,8 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
             Log.e(TAG, "view not found");
         }
         if(isEverythingDone){
-            stopSelf();
+          stopForeground(true);
+          stopSelf();
         }
     }
 
@@ -263,6 +266,12 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         assert notificationManager != null;
         notificationManager.cancel(NOTIFICATION_ID);
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        stopSelf();
     }
 
     @Nullable

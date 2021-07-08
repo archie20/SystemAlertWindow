@@ -31,7 +31,7 @@ public class NotificationHelper {
     private static final String CHANNEL_ID = "bubble_notification_channel";
     private static final String CHANNEL_NAME = "Incoming notification";
     private static final String CHANNEL_DESCRIPTION = "Incoming notification description";
-    private static final String SHORTCUT_LABEL = "Notification";
+    private static final String SHORTCUT_LABEL = "Open App";
     private static final int BUBBLE_NOTIFICATION_ID = 1237;
     private static final String BUBBLE_SHORTCUT_ID = "bubble_shortcut";
     private static final int REQUEST_CONTENT = 1;

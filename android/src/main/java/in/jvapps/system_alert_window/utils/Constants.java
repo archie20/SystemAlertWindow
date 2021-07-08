@@ -10,6 +10,7 @@ public class Constants {
     public static final String CODE_CALLBACK_HANDLE_KEY = "code_callback_handler";
 
     public static final String INTENT_EXTRA_PARAMS_MAP = "intent_params_map";
+    public static final String INTENT_ICON_ID = "intent_icon_id";
 
     static final String CALLBACK_TYPE_ONCLICK = "onClick";
 
