@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -17,6 +18,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
@@ -169,7 +171,6 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
         return params;
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private void setWindowView(WindowManager.LayoutParams params, boolean isCreate) {
         boolean isEnableDraggable = true;//params.width == WindowManager.LayoutParams.MATCH_PARENT;
         if (isCreate) {
@@ -184,8 +185,9 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
             windowView.addView(bodyView);
         if (footerView != null)
             windowView.addView(footerView);
-        if (isEnableDraggable)
-            windowView.setOnTouchListener(this);
+        Button button = (Button) headerView.findViewById(HeaderView.BUTTON_ID);
+        windowView.setOnTouchListener(this);
+        button.setOnTouchListener(this);
     }
 
     private void createWindow(HashMap<String, Object> paramsMap) {
@@ -225,10 +227,21 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
         }
     }
 
+    private void openApplication() throws PendingIntent.CanceledException {
+        PackageManager pm = mContext.getApplicationContext().getPackageManager();
+        Intent intent  =
+                pm.getLaunchIntentForPackage(mContext.getApplicationContext().getPackageName());
+        PendingIntent pendingIntent =  PendingIntent.getActivity(mContext, 0, intent, 0);
+        pendingIntent.send();
+
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        int lastAction;
         if (null != wm) {
+            lastAction = event.getAction();
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 float x = event.getRawX();
                 float y = event.getRawY();
@@ -253,6 +266,16 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
                 wm.updateViewLayout(windowView, params);
                 moving = true;
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                //As we implemented on touch listener with ACTION_MOVE,
+                //we have to check if the previous action was ACTION_DOWN
+                //to identify if the user clicked the view or not.
+                if (lastAction == MotionEvent.ACTION_DOWN) {
+                    try {
+                        openApplication();
+                    } catch (PendingIntent.CanceledException e) {
+                        Log.e(TAG, "Opening Application failed " + e.toString());
+                    }
+                }
                 return moving;
             }
         }

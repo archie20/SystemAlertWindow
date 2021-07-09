@@ -22,6 +22,7 @@ import static in.jvapps.system_alert_window.utils.Constants.*;
 public class HeaderView {
     private Map<String, Object> headerMap;
     private Context context;
+    public static int BUTTON_ID = View.generateViewId();
 
     public HeaderView(Context context, Map<String, Object> headerMap) {
         this.context = context;
@@ -51,6 +52,7 @@ public class HeaderView {
         if (isShowButton) {
             String buttonPosition = (String) headerMap.get(KEY_BUTTON_POSITION);
             Button button = UiBuilder.getButtonView(context, buttonMap);
+            button.setId(BUTTON_ID);
             if ("leading".equals(buttonPosition)) {
                 relativeLayout.addView(button);
                 relativeLayout.addView(textColumn);
@@ -87,6 +89,7 @@ public class HeaderView {
         if (isShowButton) {
             String buttonPosition = (String) headerMap.get(KEY_BUTTON_POSITION);
             Button button = UiBuilder.getButtonView(context, buttonMap);
+            button.setId(BUTTON_ID);
             if ("leading".equals(buttonPosition)) {
                 linearLayout.addView(button);
                 if (textColumn != null) {
