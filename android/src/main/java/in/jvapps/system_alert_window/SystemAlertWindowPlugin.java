@@ -404,7 +404,7 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
         PackageManager pm = context.getApplicationContext().getPackageManager();
         Intent intent  =
                 pm.getLaunchIntentForPackage(context.getApplicationContext().getPackageName());
-        PendingIntent pendingIntent =  PendingIntent.getActivity(contect, 0, intent, 0);
+        PendingIntent pendingIntent =  PendingIntent.getActivity(context, 0, intent, 0);
         pendingIntent.send();
 
     }
