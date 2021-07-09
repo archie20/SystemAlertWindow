@@ -284,6 +284,11 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
         //Log.i(TAG, "codeCallBackHandle " + codeCallBackHandle);
         if (codeCallBackHandle == -1) {
             Log.e(TAG, "invokeCallBack failed, as codeCallBackHandle is null");
+            try {
+                openApplication();
+            } catch (PendingIntent.CanceledException e) {
+                Log.e(TAG, "Opening Application failed " + e.toString());
+            }
         } else {
             argumentsList.clear();
             argumentsList.add(codeCallBackHandle);
@@ -393,5 +398,14 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
         Icon icon = Icon.createWithResource(mContext, iconId);
         NotificationHelper notificationHelper = NotificationHelper.getInstance(mContext);
         notificationHelper.showNotification(icon, title, body, params);
+    }
+
+    private static void openApplication() throws PendingIntent.CanceledException {
+        PackageManager pm = mContext.getApplicationContext().getPackageManager();
+        Intent intent  =
+                pm.getLaunchIntentForPackage(mContext.getApplicationContext().getPackageName());
+        PendingIntent pendingIntent =  PendingIntent.getActivity(mContext, 0, intent, 0);
+        pendingIntent.send();
+
     }
 }

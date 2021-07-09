@@ -239,9 +239,9 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        int lastAction;
+        int lastAction =0;
         if (null != wm) {
-            lastAction = event.getAction();
+
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 float x = event.getRawX();
                 float y = event.getRawY();
@@ -251,7 +251,8 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
                 originalXPos = location[0];
                 originalYPos = location[1];
                 offsetX = originalXPos - x;
-                offsetY = originalYPos - y;
+
+                lastAction = event.getAction();
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 float x = event.getRawX();
                 float y = event.getRawY();
@@ -265,17 +266,19 @@ public class WindowServiceNew extends Service implements View.OnTouchListener {
                 params.y = newY;
                 wm.updateViewLayout(windowView, params);
                 moving = true;
+
+                lastAction = event.getAction();
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 //As we implemented on touch listener with ACTION_MOVE,
                 //we have to check if the previous action was ACTION_DOWN
                 //to identify if the user clicked the view or not.
-                if (lastAction == MotionEvent.ACTION_DOWN) {
-                    try {
-                        openApplication();
-                    } catch (PendingIntent.CanceledException e) {
-                        Log.e(TAG, "Opening Application failed " + e.toString());
-                    }
-                }
+//                if (lastAction == MotionEvent.ACTION_DOWN) {
+//                    try {
+//                        openApplication();
+//                    } catch (PendingIntent.CanceledException e) {
+//                        Log.e(TAG, "Opening Application failed " + e.toString());
+//                    }
+//                }
                 return moving;
             }
         }
