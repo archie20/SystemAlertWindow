@@ -285,7 +285,7 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
         if (codeCallBackHandle == -1) {
             Log.e(TAG, "invokeCallBack failed, as codeCallBackHandle is null");
             try {
-                openApplication();
+                openApplication(context);
             } catch (PendingIntent.CanceledException e) {
                 Log.e(TAG, "Opening Application failed " + e.toString());
             }
@@ -400,11 +400,11 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
         notificationHelper.showNotification(icon, title, body, params);
     }
 
-    private static void openApplication() throws PendingIntent.CanceledException {
-        PackageManager pm = mContext.getApplicationContext().getPackageManager();
+    private static void openApplication(Context context) throws PendingIntent.CanceledException {
+        PackageManager pm = context.getApplicationContext().getPackageManager();
         Intent intent  =
-                pm.getLaunchIntentForPackage(mContext.getApplicationContext().getPackageName());
-        PendingIntent pendingIntent =  PendingIntent.getActivity(mContext, 0, intent, 0);
+                pm.getLaunchIntentForPackage(context.getApplicationContext().getPackageName());
+        PendingIntent pendingIntent =  PendingIntent.getActivity(contect, 0, intent, 0);
         pendingIntent.send();
 
     }
