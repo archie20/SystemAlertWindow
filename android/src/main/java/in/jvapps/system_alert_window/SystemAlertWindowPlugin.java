@@ -174,8 +174,12 @@ public class SystemAlertWindowPlugin extends Activity implements MethodCallHandl
                 }
                 break;
             case "closeSystemWindow":
+                assert (call.arguments != null);
+                List arguments = (List) call.arguments;
+                String prefMode = (String) arguments.get(0);
+                boolean isPreferOverlay = "overlay".equalsIgnoreCase(prefMode);
                 if (checkPermission()) {
-                    if (Commons.isForceAndroidBubble(mContext) || Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+                    if (Commons.isForceAndroidBubble(mContext) || (!isPreferOverlay && Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)) {
                         NotificationHelper.getInstance(mContext).dismissNotification();
                     } else {
                         final Intent i = new Intent(mContext, WindowServiceNew.class);

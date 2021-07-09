@@ -119,8 +119,8 @@ class SystemAlertWindow {
     return await _channel.invokeMethod('updateSystemWindow', [notificationTitle, notificationBody, params, Commons.getSystemWindowPrefMode(prefMode)]);
   }
 
-  static Future<bool?> closeSystemWindow() async {
-    return await _channel.invokeMethod('closeSystemWindow');
+  static Future<bool?> closeSystemWindow({SystemWindowPrefMode prefMode = SystemWindowPrefMode.DEFAULT}) async {
+    return await _channel.invokeMethod('closeSystemWindow',[ Commons.getSystemWindowPrefMode(prefMode)]);
   }
 }
 
